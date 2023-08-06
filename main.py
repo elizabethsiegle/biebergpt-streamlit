@@ -130,5 +130,5 @@ with st.form('my_form'):
             print("Message Sent!")
         else:
             st.warning("Check email validity")
-st.write("This uses LangChain PromptTemplates (and a chain and agent), Twilio SendGrid, YouTube API, and Streamlit in Python")
+st.write("This uses the JamBase API to get concert data, LangChain PromptTemplates (and a chain and agent), Twilio SendGrid, YouTube API, and Streamlit in Python")
 
