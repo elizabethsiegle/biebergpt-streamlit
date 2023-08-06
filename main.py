@@ -23,7 +23,7 @@ st.title('BieberGPT')
 st.subheader('enter details below')
 
 config = dotenv_values(".env")
-os.environ["OPENAI_API_KEY"] = config.get('OPENAI_API_KEY')
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"] #config.get('OPENAI_API_KEY')
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613")
 llm_math_chain = LLMMathChain.from_llm(llm=llm, verbose=True)
 #validate email
@@ -98,7 +98,7 @@ with st.form('my_form'):
             to_emails=email,
             subject=f'Concert plan based on your mood',
             html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url}')
-            os.environ["SENDGRID_API_KEY"] = config.get('SENDGRID_API_KEY')
+            os.environ["SENDGRID_API_KEY"] = st.secrets["SENDGRID_API_KEY"] #config.get('SENDGRID_API_KEY')
             sg = SendGridAPIClient()
             response = sg.send(message)
             print("Message Sent!")
