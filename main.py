@@ -22,7 +22,7 @@ import json
 
 st.title('BieberGPT🤖🎶')
 st.image('https://s.france24.com/media/display/ba80de5a-c06a-11eb-9594-005056bf87d6/w:1280/p:1x1/000_1OG6IB.jpg',width=100)
-st.subheader('Enter details below to get an AI-recommended Bieber song and a song from a select Outside Lands performer🎤 according to your mood! You will also get emailed📧 a concert of an OSL performer from the JamBase API')
+st.subheader('Enter details below to get an AI-recommended Bieber song and a song from a select Outside Lands performer🎤 according to your desired mood! You will also get emailed📧 a concert of an OSL performer from the JamBase API')
 st.write('Miss out on Outside Lands tickets? Catch some Outside Lands performers at other concerts! Data received from the JamBase API, songs/performers recommended by gpt-3.5-turbo-0613, app input received via Streamlit')
 st.image('https://storage.tally.so/d9947039-48cb-4392-8636-1cacdf028a21/Frame-2-4-.png',width=100 )
 st.write("Made with ❤️ at Outside🎶 LLMs⛓️ 2023")
