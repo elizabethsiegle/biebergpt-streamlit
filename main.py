@@ -98,7 +98,11 @@ with st.form('my_form'):
             st.success(f"You should go to {artistByMood}'s concert on {first_event_startdate} at {first_event_ticket_url}")
             #email reminder for show
             #hardcoded bc Jambase API does not include SF concerts for Nala or Justin Jay when it should and whem 
-            message = ''
+            message = Mail(
+                from_email='music_mood@osllms.com',
+                to_emails=email,
+                subject=f'Concert plan based on your mood',
+                html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url} or in SF on Friday, August 11: https://www.eventbrite.com/e/outside-lands-night-show-vnssa-nala-martyn-bootyspoon-tickets-660769749107')
             if artistByMood == "Nala":
                 message = Mail(
                     from_email='music_mood@osllms.com',
@@ -111,6 +115,12 @@ with st.form('my_form'):
                     to_emails=email,
                     subject=f'Concert plan based on your mood',
                     html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url} or in SF on Friday, August 11: https://www.ticketmaster.com/event/1C005ED0CEF55C87')
+            else:
+                Mail(
+                    from_email='music_mood@osllms.com',
+                    to_emails=email,
+                    subject=f'Concert plan based on your mood',
+                    html_content=f'<strong>Have fun at the concert!</strong>!\n\nFor some reason, an OSL performer was not found for you')
             os.environ["SENDGRID_API_KEY"] = st.secrets["SENDGRID_API_KEY"] #config.get('SENDGRID_API_KEY')
             sg = SendGridAPIClient()
             response = sg.send(message)
