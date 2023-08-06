@@ -6,8 +6,9 @@ from langchain import LLMMathChain, OpenAI, SerpAPIWrapper
 from langchain.agents import initialize_agent, Tool
 from langchain.agents import AgentType
 from langchain.chat_models import ChatOpenAI
+from langchain import PromptTemplate
+from langchain.chains import LLMChain
 import re
-import requests
 
 #sendgrid
 from sendgrid import SendGridAPIClient
@@ -32,11 +33,6 @@ tools = [
         name = "Search",
         func=search.run,
         description="useful for when you need to answer questions about current events. You should ask targeted questions"
-    ),
-    Tool(
-        name="Calculator",
-        func=llm_math_chain.run,
-        description="useful for when you need to answer questions about math"
     )
 ]
 #validate email
@@ -55,10 +51,6 @@ with st.form('my_form'):
         'What mood would you like to feel by listening to music?',
         ("upbeat", "pensive","sad")
     )
-    # mood = st.text_input('What kind of mood would you like to be in?')
-    location = st.selectbox(
-    'In what city would you like to attend a concert?',
-    ('San Francisco', 'Los Angeles'))
     submitted = st.form_submit_button('Submit')
     if submitted:
         if(validate_email(email)):
@@ -77,38 +69,43 @@ with st.form('my_form'):
             #Jambase concert location
             headers = { 'Accept': "application/json" }
             metroIDDict = { "San Francisco": "jambase:4",
-                           "Los Angeles": "jambase:3"
+                           "Los Angeles": "jambase:3" 
             }
-            genreDict = { "upbeat": "Vnssa",
-                         "pensive": "Justin Jay",
-                         "sad": "Nala",
-            }
-
-            concertDict = {"Vnssa": "https://www.eventbrite.com/e/outside-lands-night-show-vnssa-nala-martyn-bootyspoon-tickets-660769749107",
-                           "Justin Jay": "https://www.ticketmaster.com/event/1C005ED0CEF55C87",
-                           "Nala": "https://www.eventbrite.com/e/outside-lands-night-show-vnssa-nala-martyn-bootyspoon-tickets-660769749107"
-                           }
-            
-            geoMetroID = metroIDDict[location]
+            prompt_template = PromptTemplate.from_template(
+                  "Pick a song by Vnssa, Justin Jay, or Nala to listen to when I want to feel {mood}"
+            )
+            prompt = PromptTemplate(
+                input_variables=["mood"],
+                template="Pick a song by Vnssa, Justin Jay, or Nala to listen to when I want to feel {mood}",
+            )
+            chain = LLMChain(llm=llm, prompt=prompt)
+            artistByMoodTxt = chain.run(mood)
+            st.success(artistByMoodTxt)
+            artistByMood = ''
+            if "Justin Jay" in artistByMoodTxt:
+                artistByMood = "justin+jay"
+            elif "Vnssa" in artistByMoodTxt:
+                artistByMood = "Vnssa"
+            elif "Nala" in artistByMoodTxt:
+                artistByMood = "Nala"
+            print(f"artistByMood {artistByMood}")
             conn = http.client.HTTPSConnection("www.jambase.com")
-            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&geoMetroId={geoMetroID}&artistName={genreDict[mood]}&apikey=fc96baa4-a173-419e-aece-55224a9205dc", headers=headers)
-            jamurl = f"/jb-api/v1/events?eventType=concerts&geoMetroId={geoMetroID}&artistName={genreDict[mood]}&apikey=fc96baa4-a173-419e-aece-55224a9205dc"
+            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey=fc96baa4-a173-419e-aece-55224a9205dc", headers=headers)
+            jamurl = f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey=fc96baa4-a173-419e-aece-55224a9205dc"
             res = conn.getresponse()
             data = res.read()
             json_data = json.loads(data)
+            print(f"jamurl {jamurl}")
             first_event_name = json_data["events"][0]["name"]
             first_event_startdate = json_data["events"][0]["startDate"]
-            print(first_event_name)
-            print(first_event_startdate)
-            first_event_artist = genreDict[mood]
             first_event_ticket_url = json_data["events"][0]["offers"][0]["url"]
-            st.success(f"You should go to {first_event_artist}'s concert in {location} on {first_event_startdate} at {first_event_ticket_url}") # : {concertDict[genreDict[mood]]}
+            st.success(f"You should go to {artistByMood}'s concert on {first_event_startdate} at {first_event_ticket_url}")
             #email reminder for show
             message = Mail(
             from_email='music_mood@osllms.com',
             to_emails=email,
-            subject=f'Concert plan based on your mood in {location}',
-            html_content=f'<strong>Have fun at the concert!</strong>!\n\n{first_event_artist} in {location} on {first_event_startdate} at {first_event_ticket_url}')
+            subject=f'Concert plan based on your mood',
+            html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url}')
             os.environ["SENDGRID_API_KEY"] = config.get('SENDGRID_API_KEY')
             sg = SendGridAPIClient()
             response = sg.send(message)
