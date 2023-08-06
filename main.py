@@ -9,6 +9,10 @@ from langchain.chat_models import ChatOpenAI
 import re
 import requests
 
+#sendgrid
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import (Mail)
+
 import streamlit as st
 
 from dotenv import dotenv_values
@@ -100,6 +104,15 @@ with st.form('my_form'):
             first_event_ticket_url = json_data["events"][0]["offers"][0]["url"]
             st.success(f"You should go to {first_event_artist}'s concert in {location} on {first_event_startdate} at {first_event_ticket_url}") # : {concertDict[genreDict[mood]]}
             #email reminder for show
+            message = Mail(
+            from_email='music_mood@osllms.com',
+            to_emails=email,
+            subject=f'Concert plan based on your mood in {location}',
+            html_content=f'<strong>Have fun at the concert!</strong>!\n\n{first_event_artist} in {location} on {first_event_startdate} at {first_event_ticket_url}')
+            os.environ["SENDGRID_API_KEY"] = config.get('SENDGRID_API_KEY')
+            sg = SendGridAPIClient()
+            response = sg.send(message)
+            print("Message Sent!")
         else:
             st.warning("Check email validity")
 
