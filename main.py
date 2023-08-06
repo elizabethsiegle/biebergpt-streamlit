@@ -12,8 +12,9 @@ import requests
 import streamlit as st
 
 from dotenv import dotenv_values
+import json 
 
-st.title('Bieberbot')
+st.title('BieberGPT')
 st.subheader('enter details below')
 
 config = dotenv_values(".env")
@@ -48,7 +49,7 @@ with st.form('my_form'):
     email = st.text_input('Email to send plan to')
     mood = st.selectbox(
         'What mood would you like to feel by listening to music?',
-        ("upbeat", "somber", "pensive", "optimistic", "sad")
+        ("upbeat", "pensive","sad")
     )
     # mood = st.text_input('What kind of mood would you like to be in?')
     location = st.selectbox(
@@ -74,19 +75,30 @@ with st.form('my_form'):
             metroIDDict = { "San Francisco": "jambase:4",
                            "Los Angeles": "jambase:3"
             }
-            genreDict = { "bluegrass": "upbeat",
-                         "blues": "upbeat",
-                         "classical": "pensive",
-                         "jazz": "optimistic",
+            genreDict = { "upbeat": "Vnssa",
+                         "pensive": "Justin Jay",
+                         "sad": "Nala",
             }
+
+            concertDict = {"Vnssa": "https://www.eventbrite.com/e/outside-lands-night-show-vnssa-nala-martyn-bootyspoon-tickets-660769749107",
+                           "Justin Jay": "https://www.ticketmaster.com/event/1C005ED0CEF55C87",
+                           "Nala": "https://www.eventbrite.com/e/outside-lands-night-show-vnssa-nala-martyn-bootyspoon-tickets-660769749107"
+                           }
             
             geoMetroID = metroIDDict[location]
             conn = http.client.HTTPSConnection("www.jambase.com")
-            conn.request("GET", f"/jb-api/v1/events?artistName=Vnssa&geoMetroId={geoMetroID}&apikey=fc96baa4-a173-419e-aece-55224a9205dc", headers=headers)
+            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&geoMetroId={geoMetroID}&artistName={genreDict[mood]}&apikey=fc96baa4-a173-419e-aece-55224a9205dc", headers=headers)
+            jamurl = f"/jb-api/v1/events?eventType=concerts&geoMetroId={geoMetroID}&artistName={genreDict[mood]}&apikey=fc96baa4-a173-419e-aece-55224a9205dc"
             res = conn.getresponse()
             data = res.read()
-            print(data.decode("utf-8"))
-            st.success(f"You should go to this concert in {location}: ")
+            json_data = json.loads(data)
+            first_event_name = json_data["events"][0]["name"]
+            first_event_startdate = json_data["events"][0]["startDate"]
+            print(first_event_name)
+            print(first_event_startdate)
+            first_event_artist = genreDict[mood]
+            first_event_ticket_url = json_data["events"][0]["offers"][0]["url"]
+            st.success(f"You should go to {first_event_artist}'s concert in {location} on {first_event_startdate} at {first_event_ticket_url}") # : {concertDict[genreDict[mood]]}
             #email reminder for show
         else:
             st.warning("Check email validity")
