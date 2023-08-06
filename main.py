@@ -46,7 +46,7 @@ def validate_email(email):
     
 agent = initialize_agent(tools, llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=True)
 with st.form('my_form'):
-    email = st.text_input('Email to send plan to')
+    email = st.text_input('Email to send concert plan to')
     mood = st.selectbox(
         'What mood would you like to feel by listening to music?',
         ("upbeat", "pensive","sad")
