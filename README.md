@@ -25,7 +25,7 @@ BieberGPT fetches concert data using the Jambase API. The chatbot recommends con
 BieberGPT utilizes the SendGrid API to send concert plans to the user's email. After selecting a concert, the chatbot sends a reminder email with the details of the recommended concert.
 
 ## Contributions
-We welcome contributions to BieberGPT! If you have any ideas, bug fixes, or enhancements, feel free to open an issue or submit a pull request on GitHub.
+We welcome contributions to BieberGPT! If you have any enhancements, feel free to open an issue or submit a pull request on GitHub.
 
 ## Credits
 BieberGPT is an AI hack for Outside LLMs 2023. Special thanks to developers Boyd Lever and Elizabeth Siegle, and to LangChain, Streamlit, YouTube, Jambase, and SendGrid for their APIs.
