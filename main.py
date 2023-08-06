@@ -22,7 +22,7 @@ import json
 
 st.title('BieberGPT🤖🎶')
 st.image('https://s.france24.com/media/display/ba80de5a-c06a-11eb-9594-005056bf87d6/w:1280/p:1x1/000_1OG6IB.jpg',width=100)
-st.subheader('Enter details below to get an AI-generated Bieber song and song from a select Outside Lands performer🎤 according to your mood! You will also get emailed📧 a concert of an OSL performer from the Jambase API')
+st.subheader('Enter details below to get an AI-recommended Bieber song and a song from a select Outside Lands performer🎤 according to your mood! You will also get emailed📧 a concert of an OSL performer from the JamBase API')
 st.write('Miss out on Outside Lands tickets? Catch some Outside Lands performers at other concerts! Data received from the JamBase API')
 st.image('https://storage.tally.so/d9947039-48cb-4392-8636-1cacdf028a21/Frame-2-4-.png',width=100 )
 st.write("Made with ❤️ at Outside🎶 LLMs⛓️ 2023")
@@ -54,7 +54,7 @@ with st.form('my_form'):
         if(validate_email(email)):
             songFromJBLLM = agent.run(f"What is a Justin Bieber song relating to {mood}")
             # songFromEmpire = list of artists ??
-            # check out upcoming concerts from Jambase
+            # check out upcoming concerts from JamBase
             DEVELOPER_KEY = st.secrets["YOUTUBE_API_KEY"] # REPLACE IF RUNNING LOCALLY: config.get('YOUTUBE_API_KEY')
             YOUTUBE_API_SERVICE_NAME = "youtube"
             YOUTUBE_API_VERSION = "v3"
