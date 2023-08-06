@@ -1,6 +1,5 @@
 import os
-# from langchain.chat_models import ChatOpenAI
-from apiclient.discovery import build
+from apiclient.discovery import build #youtube api
 import http.client
 from langchain import LLMMathChain, OpenAI
 from langchain.agents import initialize_agent, load_tools
@@ -10,12 +9,14 @@ from langchain import PromptTemplate
 from langchain.chains import LLMChain
 import re
 
-#sendgrid
+#sendgrid send email plan
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail)
 
+#python web app deployed: https://biebergpt-outsidellms.streamlit.app/
 import streamlit as st
 
+#run locally 
 from dotenv import dotenv_values
 import json 
 
@@ -42,6 +43,8 @@ with st.form('my_form'):
         'What mood would you like to feel by listening to music?',
         ("upbeat", "pensive","sad")
     )
+    location = st.selectbox('What location would you like to see concerts in?',
+                            ("San Francisco", "Los Angeles"))
     submitted = st.form_submit_button('Submit')
     if submitted:
         if(validate_email(email)):
@@ -94,11 +97,20 @@ with st.form('my_form'):
             first_event_ticket_url = json_data["events"][0]["offers"][0]["url"]
             st.success(f"You should go to {artistByMood}'s concert on {first_event_startdate} at {first_event_ticket_url}")
             #email reminder for show
-            message = Mail(
-            from_email='music_mood@osllms.com',
-            to_emails=email,
-            subject=f'Concert plan based on your mood',
-            html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url}')
+            #hardcoded bc Jambase API does not include SF concerts for Nala or Justin Jay when it should and whem 
+            if artistByMood == "Nala":
+                message = Mail(
+                    from_email='music_mood@osllms.com',
+                    to_emails=email,
+                    subject=f'Concert plan based on your mood',
+                    html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url} or in SF on Friday, August 11: https://www.eventbrite.com/e/outside-lands-night-show-vnssa-nala-martyn-bootyspoon-tickets-660769749107')
+            elif artistByMood == "justin+jay":
+                concert += "https://www.ticketmaster.com/event/1C005ED0CEF55C87"
+                message = Mail(
+                    from_email='music_mood@osllms.com',
+                    to_emails=email,
+                    subject=f'Concert plan based on your mood',
+                    html_content=f'<strong>Have fun at the concert!</strong>!\n\n{artistByMood} on {first_event_startdate} at {first_event_ticket_url} or in SF on Friday, August 11: https://www.ticketmaster.com/event/1C005ED0CEF55C87')
             os.environ["SENDGRID_API_KEY"] = st.secrets["SENDGRID_API_KEY"] #config.get('SENDGRID_API_KEY')
             sg = SendGridAPIClient()
             response = sg.send(message)
