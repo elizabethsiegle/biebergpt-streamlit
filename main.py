@@ -48,7 +48,7 @@ with st.form('my_form'):
             songFromJBLLM = agent.run(f"What is a Justin Bieber song relating to {mood}")
             # songFromEmpire = list of artists
             # check out upcoming concerts from Jambase
-            DEVELOPER_KEY = "AIzaSyBIA3XG7cpwCIm4P6LyZYGRUaocvB6k9P0" 
+            DEVELOPER_KEY = st.secrets["YOUTUBE_API_KEY"] #config.get('YOUTUBE_API_KEY')
             YOUTUBE_API_SERVICE_NAME = "youtube"
             YOUTUBE_API_VERSION = "v3"
             youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, 
@@ -80,9 +80,10 @@ with st.form('my_form'):
             elif "Nala" in artistByMoodTxt:
                 artistByMood = "Nala"
             print(f"artistByMood {artistByMood}")
-            conn = http.client.HTTPSConnection("www.jambase.com")
-            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey=fc96baa4-a173-419e-aece-55224a9205dc", headers=headers)
-            jamurl = f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey=fc96baa4-a173-419e-aece-55224a9205dc"
+            conn = http.client.HTTPSConnection("www.jambase.com") 
+            jambaseapikey = st.secrets["JAMBASE_API_KEY"]
+            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey={jambaseapikey}", headers=headers)
+            jamurl = f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey={jambaseapikey}"
             res = conn.getresponse()
             data = res.read()
             json_data = json.loads(data)
@@ -90,7 +91,6 @@ with st.form('my_form'):
             first_event_name = json_data["events"][0]["name"]
             first_event_startdate = json_data["events"][0]["startDate"]
             first_event_startdate = first_event_startdate.split('T')[0]
-            #first_event_startdate = first_event_startdate.
             first_event_ticket_url = json_data["events"][0]["offers"][0]["url"]
             st.success(f"You should go to {artistByMood}'s concert on {first_event_startdate} at {first_event_ticket_url}")
             #email reminder for show
