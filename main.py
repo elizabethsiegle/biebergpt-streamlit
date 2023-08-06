@@ -48,7 +48,7 @@ with st.form('my_form'):
             songFromJBLLM = agent.run(f"What is a Justin Bieber song relating to {mood}")
             # songFromEmpire = list of artists ??
             # check out upcoming concerts from Jambase
-            DEVELOPER_KEY = st.secrets["YOUTUBE_API_KEY"] #config.get('YOUTUBE_API_KEY')
+            DEVELOPER_KEY = st.secrets["YOUTUBE_API_KEY"] # REPLACE IF RUNNING LOCALLY: config.get('YOUTUBE_API_KEY')
             YOUTUBE_API_SERVICE_NAME = "youtube"
             YOUTUBE_API_VERSION = "v3"
             youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, 
