@@ -89,6 +89,7 @@ with st.form('my_form'):
             print(f"jamurl {jamurl}")
             first_event_name = json_data["events"][0]["name"]
             first_event_startdate = json_data["events"][0]["startDate"]
+            first_event_startdate = first_event_startdate.
             first_event_ticket_url = json_data["events"][0]["offers"][0]["url"]
             st.success(f"You should go to {artistByMood}'s concert on {first_event_startdate} at {first_event_ticket_url}")
             #email reminder for show
