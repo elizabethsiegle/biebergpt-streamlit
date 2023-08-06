@@ -21,7 +21,7 @@ from dotenv import dotenv_values
 import json 
 
 st.title('BieberGPT')
-st.subheader('enter details below')
+st.subheader('enter details below to get an AI-generated Justin Bieber song and song from a select OSL performer according to your mood! You will also get emailed a concert of an OSL performer from Jambase API')
 
 config = dotenv_values(".env")
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"] #config.get('OPENAI_API_KEY')
