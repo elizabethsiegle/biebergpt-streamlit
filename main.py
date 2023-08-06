@@ -46,7 +46,7 @@ with st.form('my_form'):
     if submitted:
         if(validate_email(email)):
             songFromJBLLM = agent.run(f"What is a Justin Bieber song relating to {mood}")
-            # songFromEmpire = list of artists
+            # songFromEmpire = list of artists ??
             # check out upcoming concerts from Jambase
             DEVELOPER_KEY = st.secrets["YOUTUBE_API_KEY"] #config.get('YOUTUBE_API_KEY')
             YOUTUBE_API_SERVICE_NAME = "youtube"
