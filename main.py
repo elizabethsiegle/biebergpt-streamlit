@@ -21,9 +21,10 @@ from dotenv import dotenv_values
 import json 
 
 st.title('BieberGPT')
-st.subheader('enter details below to get an AI-generated Justin Bieber song and song from a select OSL performer according to your mood! You will also get emailed a concert of an OSL performer from Jambase API')
 st.image('https://s.france24.com/media/display/ba80de5a-c06a-11eb-9594-005056bf87d6/w:1280/p:1x1/000_1OG6IB.jpg',width=100)
+st.subheader('enter details below to get an AI-generated Justin Bieber song and song from a select OSL performer according to your mood! You will also get emailed a concert of an OSL performer from Jambase API')
 st.image('https://storage.tally.so/d9947039-48cb-4392-8636-1cacdf028a21/Frame-2-4-.png',width=100 )
+st.subheader("Made with <3 at Outside LLMs 2023")
 config = dotenv_values(".env")
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"] #config.get('OPENAI_API_KEY')
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613")
@@ -128,4 +129,5 @@ with st.form('my_form'):
             print("Message Sent!")
         else:
             st.warning("Check email validity")
+st.subheader("This uses LangChain PromptTemplates (and chain and agent), Twilio SendGrid, YouTube API, and Streamlit in Python")
 
