@@ -89,7 +89,7 @@ with st.form('my_form'):
             print(f"artistByMood {artistByMood}")
             conn = http.client.HTTPSConnection("www.jambase.com") 
             jambaseapikey = st.secrets["JAMBASE_API_KEY"]
-            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey={jambaseapikey}", headers=headers)
+            conn.request("GET", f"/jb-api/v1/events?eventType=concerts&geoCityId={metroIDDict}&artistName={artistByMood}&apikey={jambaseapikey}", headers=headers)
             jamurl = f"/jb-api/v1/events?eventType=concerts&artistName={artistByMood}&apikey={jambaseapikey}"
             res = conn.getresponse()
             data = res.read()
