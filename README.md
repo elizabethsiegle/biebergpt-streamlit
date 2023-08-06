@@ -15,13 +15,13 @@ If you wish to run the project locally, follow the steps below:
 
 ## How It Works
 BieberGPT uses several APIs and libraries to provide music recommendations and concert plans:
-# 1. **OpenAI GPT-3.5 Turbo**
+## 1. **OpenAI GPT-3.5 Turbo**
 BieberGPT leverages the power of the OpenAI GPT-3.5 Turbo language model to generate AI-generated Justin Bieber song recommendations based on the user's mood. The language model is integrated into the chatbot using the LangChain library
-# 2. **YouTube API**
+## 2. **YouTube API**
 To provide song recommendations, BieberGPT uses the YouTube API to search for the top related videos for the recommended Justin Bieber song. Users can access the YouTube link to listen to the suggested song.
-# 3. **Jambase API**
+## 3. **Jambase API**
 BieberGPT fetches concert data using the Jambase API. The chatbot recommends concerts of local artists based on the user's mood and location preference (San Francisco or Los Angeles). The concerts are suggested for artists Vnssa, Justin Jay, or Nala.
-# 4. **SendGrid API**
+## 4. **SendGrid API**
 BieberGPT utilizes the SendGrid API to send concert plans to the user's email. After selecting a concert, the chatbot sends a reminder email with the details of the recommended concert.
 
 ## Contributions
