@@ -25,7 +25,7 @@ st.image('https://s.france24.com/media/display/ba80de5a-c06a-11eb-9594-005056bf8
 st.subheader('enter details below to get an AI-generated Bieber song and song from a select OSL performer🎤 according to your mood! You will also get emailed📧 a concert of an OSL performer from the Jambase API')
 st.image('https://storage.tally.so/d9947039-48cb-4392-8636-1cacdf028a21/Frame-2-4-.png',width=100 )
 st.write("Made with ❤️ at Outside🎶 LLMs⛓️ 2023")
-st.write(st.write("Code on GitHub [link](https://github.com/elizabethsiegle/biebergpt-streamlit)"))
+st.write("[Code on GitHub](https://github.com/elizabethsiegle/biebergpt-streamlit)")
 config = dotenv_values(".env")
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"] #config.get('OPENAI_API_KEY')
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613")
