@@ -28,6 +28,6 @@ BieberGPT utilizes the SendGrid API to send concert plans to the user's email. A
 We welcome contributions to BieberGPT! If you have any enhancements, feel free to open an issue or submit a pull request on GitHub.
 
 ## Credits
-BieberGPT is an AI hack for Outside LLMs 2023. Special thanks to developers Boyd Lever and Elizabeth Siegle, and to LangChain, Streamlit, YouTube, Jambase, and SendGrid for their APIs.
+BieberGPT is an AI hack for Outside LLMs 2023. Special thanks to LangChain, Streamlit, YouTube, JamBase, and SendGrid for their APIs.
 
 Enjoy the music with BieberGPT! 🎶🎤
